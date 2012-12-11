@@ -5,6 +5,11 @@ gem 'rails', '3.2.9'
 group :development, :test do
   gem 'sqlite3', '1.3.5'
   gem 'rspec-rails', '2.11.0'
+  # dyc guard so we can do test automatically, see Listing 3.33
+  gem 'guard-rspec', '1.2.1'
+  ## add sport to speed up test, see section 3.6.3
+  gem 'guard-spork', '1.2.0'
+  gem 'spork', '0.9.2'
 end
 
 # Gems used only for assets and not required
@@ -23,6 +28,9 @@ gem 'jquery-rails', '2.0.2'
 
 group :test do
   gem 'capybara', '1.1.2'
+  # dyc add the following two lines as List 3.33
+  gem 'rb-inotify', '0.8.8'
+  gem 'libnotify', '0.5.9'
 end
 
 group :production do
