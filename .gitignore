@@ -21,3 +21,9 @@ doc/
 .project
 .DS_Store
 bundler_stubs/
+## my old files end with _old
+*_old*
+*_bad*
+*_why*
+*_ok*
+foobar*
