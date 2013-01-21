@@ -15,6 +15,7 @@ group :development, :test do
   ## add sport to speed up test, see section 3.6.3
   gem 'guard-spork', '1.2.0'
   gem 'spork', '0.9.2'
+  gem 'factory_girl_rails', '4.1.0'
 end
 
 ## this will add annotation to model rb files, just comments
