@@ -4,6 +4,8 @@ gem 'rails', '3.2.11'
 
 # to get Twitter Bootstrap framework for web design
 gem 'bootstrap-sass', '2.1'
+## this is for crypted password
+gem 'bcrypt-ruby', '3.0.1'
 
 group :development, :test do
   gem 'sqlite3', '1.3.5'
@@ -13,6 +15,11 @@ group :development, :test do
   ## add sport to speed up test, see section 3.6.3
   gem 'guard-spork', '1.2.0'
   gem 'spork', '0.9.2'
+end
+
+## this will add annotation to model rb files, just comments
+group :development do
+  gem 'annotate', '2.5.0'
 end
 
 # Gems used only for assets and not required
