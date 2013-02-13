@@ -15,6 +15,10 @@ module SessionsHelper
     @current_user = user
   end
 
+  def current_user?(user)  ## this method is used in Listing 9.15, @user is the passdown arg
+    user == current_user
+  end
+
   ## @ is a instance variable, current_user is a function to get the value of
   ## the variable
   def current_user
@@ -26,5 +30,15 @@ module SessionsHelper
   def sign_out
     self.current_user = nil
     cookies.delete(:remember_token)
+  end
+
+  ## Listing 9.18.  The following two definitions are for friendly forwarding
+  def redirect_back_or(default)
+    redirect_to(session[:return_to] || default)
+    session.delete(:return_to)
+  end
+
+  def store_location
+    session[:return_to] = request.url
   end
 end
