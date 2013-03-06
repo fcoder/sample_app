@@ -11,10 +11,6 @@ class UsersController < ApplicationController
   # but I would rather use reject_if_not_admin
   before_filter :reject_if_not_admin,     only: :destroy
 
-  def show
-    @user = User.find(params[:id])
-  end
-
   def new
     @user = User.new
   end
@@ -65,16 +61,13 @@ class UsersController < ApplicationController
     redirect_to users_url
   end
 
+  def show
+    @user = User.find(params[:id])
+    @microposts = @user.microposts.paginate(page: params[:page])
+  end
+
   private
-    ## signed_in_user used as by callback "before_filter" above
-    ## Before edit or update, will do signin first
-    ## Listing9.19  For friendly forwarding
-    def signed_in_user
-      unless signed_in?  ## equivalent to !signed_in?
-        store_location
-        redirect_to signin_url, notice: "Please sign in."
-      end
-    end
+    # def signed_in_user has been moved to sessions_helper.rb
 
     def correct_user
       @user = User.find(params[:id])

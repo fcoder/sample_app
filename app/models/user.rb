@@ -12,6 +12,14 @@
 class User < ActiveRecord::Base
   attr_accessible :name, :email, :password, :password_confirmation
   has_secure_password
+  has_many :microposts, dependent: :destroy  # Listing10.11, 10,16
+  # dependent: :destroy means microposts should be destroyed if user is destroyed
+
+  # Listing 10.39 fee microposts to a user's page
+  def feed
+    # This is preliminary. See "Following users" for the full implementation.
+    Micropost.where("user_id = ?", id)
+  end
 
   ## These are callbacks. The first callback will lower email before save
   ## The second callback invoked the defined function create_remember_token below

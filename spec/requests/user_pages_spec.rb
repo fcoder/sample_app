@@ -134,4 +134,22 @@ describe "User pages" do
       specify { user.reload.email.should == new_email }
     end
   end
+
+  ## Listing 10.19
+  describe "profile page" do
+    let(:user_x) { FactoryGirl.create(:user) }
+    let!(:m1) { FactoryGirl.create(:micropost, user: user_x, content: "Foo") }
+    let!(:m2) { FactoryGirl.create(:micropost, user: user_x, content: "Bar") }
+
+    before { visit user_path(user_x) }
+
+    it { should have_selector('h1',    text: user_x.name) }
+    it { should have_selector('title', text: user_x.name) }
+
+    describe "microposts" do
+      it { should have_content(m1.content) }
+      it { should have_content(m2.content) }
+      it { should have_content(user_x.microposts.count) }
+    end
+  end
 end

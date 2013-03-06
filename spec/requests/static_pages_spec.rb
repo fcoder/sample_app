@@ -16,6 +16,23 @@ describe "Static pages" do
 
     it_should_behave_like "all static pages"
     it { should_not have_selector 'title', text: '| Home' }
+
+    # Listing 10.40 A test for rendering the feed on home page
+    describe "for signed-in users" do
+      let(:user_x) { FactoryGirl.create(:user) }
+      before do
+        FactoryGirl.create(:micropost, user: user_x, content: "Lorem ipsum")
+        FactoryGirl.create(:micropost, user: user_x, content: "Dolor sit amet")
+        sign_in user_x
+        visit root_path
+      end
+
+      it "should render the user's feed" do
+        user_x.feed.each do |item|
+          page.should have_selector("li##{item.id}", text: item.content)
+        end
+      end
+    end
   end
 
   describe "Help page" do

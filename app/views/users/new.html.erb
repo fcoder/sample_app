@@ -4,7 +4,12 @@
 <div class="row">
   <div class="span6 offset3">
     <%= form_for(@user) do |f| %>
-      <%= render 'shared/error_messages' %>
+      # See book comment above Listing10.36, the new error partial
+      # now expects a variable called obj, so we must pass it to
+      # the partial, obj here is the arg of form_for, which is
+      # @user. The error partial now can handle any obj, for
+      # example, @microposts, does not have to be @user
+      <%= render 'shared/error_messages', :obj=>f.object %>
 
       <%= f.label :name %>
       <%= f.text_field :name %>

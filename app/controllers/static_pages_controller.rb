@@ -1,7 +1,11 @@
 class StaticPagesController < ApplicationController
+
+  # Listing 10.41
   def home
-	render 'home' # renders the view app/views/static_pages/home.html.erb - default behavior
-	p 'Hello'
+    if signed_in?
+      @micropost  = current_user.microposts.build
+      @feed_items = current_user.feed.paginate(page: params[:page])
+    end
   end
 
   def help

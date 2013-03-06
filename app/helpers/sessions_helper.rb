@@ -15,8 +15,19 @@ module SessionsHelper
     @current_user = user
   end
 
-  def current_user?(user)  ## this method is used in Listing 9.15, @user is the passdown arg
+  def current_user?(user)  ## used in Listing 9.15, @user is the passdown arg
     user == current_user
+  end
+
+  # Listing10.27
+  # signed_in_user used as by callback "before_filter" above
+  # Before edit or update, will do signin first
+  # Listing9.19  For friendly forwarding
+  def signed_in_user
+    unless signed_in?  ## equivalent to !signed_in?
+      store_location
+      redirect_to signin_url, notice: "Please sign in."
+    end
   end
 
   ## @ is a instance variable, current_user is a function to get the value of

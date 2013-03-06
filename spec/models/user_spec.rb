@@ -25,8 +25,10 @@ describe User do
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:remember_token) }
-  it { should respond_to(:admin) }  # L9.39 should hace an admin attr
+  it { should respond_to(:admin) }       # Listing9.39
   it { should respond_to(:authenticate) }
+  it { should respond_to(:microposts) }  # Listing10.9
+  it { should respond_to(:feed) }        # Listing10.38
 
   it { should be_valid }
   it { should_not be_admin }  # L9.39, so far we only have an admin addr
@@ -133,6 +135,43 @@ describe User do
   describe "remember token" do
     before { @user.save }
     its(:remember_token) { should_not be_blank }
+  end
+
+  # Listing 10.13
+  describe "micropost associations" do
+
+    before { @user.save }
+    let!(:older_micropost) do 
+      FactoryGirl.create(:micropost, user: @user, created_at: 1.day.ago)
+    end
+    let!(:newer_micropost) do
+      FactoryGirl.create(:micropost, user: @user, created_at: 1.hour.ago)
+    end
+
+    it "should have the right microposts in the right order" do
+      @user.microposts.should == [newer_micropost, older_micropost]
+    end
+
+    # Listing 10.15 of the book (diff from online tutorial)
+    it "should destroy associated microposts" do
+      microposts = @user.microposts
+      @user.destroy
+      microposts.each do |micropost|
+        Micropost.find_by_id(micropost.id).should be_nil
+      end
+    end
+
+    # Listing 10.38, the 3rd micropost does not belong to user, so it
+    # should not be included in the feed
+    describe "status" do
+      let(:unfollowed_post) do
+        FactoryGirl.create(:micropost, user: FactoryGirl.create(:user))
+      end
+
+      its(:feed) { should include(newer_micropost) }
+      its(:feed) { should include(older_micropost) }
+      its(:feed) { should_not include(unfollowed_post) }
+    end
   end
 end
 
